@@ -19,25 +19,13 @@ const {
     YamlDatabase
 } = require("wio.db");
 
-const mesaj = new JsonDatabase({
-    databasePath:"./databases/mesaj.json" 
-});
-const komuttr = new JsonDatabase({
-    databasePath:"./databases/komuttr.json" 
-});
-const komuten = new JsonDatabase({
-    databasePath:"./databases/komuten.json" 
-});
-const gw = new JsonDatabase({
-    databasePath:"./databases/toplam_gw.json" 
+const komut = new JsonDatabase({
+    databasePath:"./databases/komut.json" 
 });
 
-client.komuttr = komuttr
-client.komuten = komuten 
-client.mesaj = mesaj 
-client.gw = gw
+client.komut = komut
 
-client.login("NzY1MjA3MjY4NDA4MDMzMzIy.GAgu9s.KxgoT-6ZXZ8XVafgo0VNB1F8THvmVBa2RtCZrQ");
+client.login("");
 
 require("./utils/slash-loader.js")(client)
 
@@ -322,11 +310,6 @@ await interaction.update({embeds: [embed]})
 client.on("messageCreate", message => {
   if (message.channel.type === "dm") return;
 });
-
-client.on('messageCreate', async(message) => {
-if(message.author.bot) return;
-    await client.mesaj.add(`toplam_mesaj_${message.guild.id}_${message.author.id}`,1)
-   })
 
 client.setMaxListeners(50);
 
