@@ -41,10 +41,10 @@ const category = interaction.options.getString('category');
 const kanal = channel || interaction.channel
 const embed = new MessageEmbed().setColor("#5865F2");
 
-if(!db.fetch(`onaylı_kullanıcı_${interaction.user.id}`)) {
-let mesaj = `<a:asistant:973486258519162880> You have to be an approved user to set up a Ticket system!
-<:sgs_tick:973476146391945246> You can apply for an approved user from the button below!
-<:sgs_error:973476189979160616> If the button is not working, click on the \`Support Server\` button and apply from our support server.`
+if(!await client.verifieduser.fetch(`onaylı_kullanıcı_${interaction.user.id}`)) {
+let mesaj = `😔 You have to be an approved user to set up a Ticket system!
+👍 You can apply for an approved user from the button below!
+⚠️ If the button is not working, click on the \`Support Server\` button and apply from our support server.`
 const onay = new MessageActionRow() 
 .addComponents(
 new MessageButton() 
@@ -94,10 +94,10 @@ const row = new MessageActionRow()
 const ticketEmbed = embed.setDescription(`${message || 'You can click on the button below to create a ticket.'}`)
 const ticket = await kanal.send({ embeds: [ticketEmbed], 
  components: [row]});
-db.set(`ticket_kategori_${interaction.guild.id}`, category)
-db.set(`ticket_kanal_${interaction.guild.id}`, channel.id) 
-db.set(`ticket_rol_${interaction.guild.id}`, role.id)
-//db.set(`ticket_mesaj_${interaction.guild.id}`, ticket.id)
+await client.ticket.set(`ticket_kategori_${interaction.guild.id}`, category)
+await client.ticket.set(`ticket_kanal_${interaction.guild.id}`, channel.id) 
+await client.ticket.set(`ticket_rol_${interaction.guild.id}`, role.id)
+//await client.ticket.set(`ticket_mesaj_${interaction.guild.id}`, ticket.id)
 
 }
 } 
