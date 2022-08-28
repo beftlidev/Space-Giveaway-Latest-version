@@ -21,20 +21,15 @@ new MessageButton()
 .setURL('https://spacegw.xyz/')
 ) 
 
-const Teyit = await client.komuten.all().filter(data => data.ID.startsWith(`komut_`)).sort((a, b) => b.data - a.data)
+const Teyit = await client.komut.all().filter(data => data.ID.startsWith(`komut_`)).sort((a, b) => b.data - a.data)
         Teyit.length = 1
         let FinalDB = ""
         for (var i in Teyit) {
           FinalDB += `\`/${Teyit[i].ID.slice(6)}\` (\`${Teyit[i].data}\` Usage)`
         }
-const promises = [
-client.shard.fetchClientValues('guilds.cache.size'),
-client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
-		];
-  Promise.all(promises)
-	.then(results => {
-		const guildd = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
-		const userr = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
+
+		const guildd = client.guilds.cache.size
+		const userr = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()
 let embed = new Discord.MessageEmbed()
     .setColor("RANDOM") 
     .setAuthor("Space Giveaway Info") 
@@ -42,8 +37,7 @@ let embed = new Discord.MessageEmbed()
 <:server_req:973476419214643260> Total servers: **${guildd}**
 <:wumpus_sgs:973476021552693288> Total Users: **${userr}**
 
-**• Shard Information**
-<:rdp:973476571241390080> Shard Id: **${Number(client.shard.ids)+1} / 6**
+**• Server Information**
 🏓 Ping: **${client.ws.ping}**
 
 **• Versions**
@@ -60,7 +54,6 @@ let embed = new Discord.MessageEmbed()
 <:sgs_slash:973476174762217482> Total Command Usage: **${db.fetch(`bot_using`)}**`)  
 .setTimestamp() 
 interaction.reply({ embeds: [embed], components: [row]}) 
-})
 
 } 
 }
