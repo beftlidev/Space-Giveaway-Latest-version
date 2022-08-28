@@ -2,7 +2,7 @@ const { Sequelize, DataTypes, Model } = require("sequelize")
 const sequelize = new Sequelize({
     logging: false,
     dialect: "sqlite",
-    storage: "database-poll.sqlite",
+    storage: "../databases/Poll/data.sqlite",
 })
 
 class Poll extends Model {}
