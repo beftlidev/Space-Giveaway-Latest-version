@@ -5,7 +5,7 @@ const {
     roleMention,
 } = require("@discordjs/builders")
 const Discord = require('discord.js');
-const end = require("../helpers/end.js")
+const end = require("../helpers/end-giveaway.js")
 const { v4: uuidv4 } = require("uuid")
 const addModal = require("../helpers/addModal")
 const {
@@ -15,7 +15,7 @@ const {
     TextInputComponent,
     Modal,
 } = require("discord.js")
-const db = require("../helpers/database.js")
+const db = require("../helpers/database-giveaway.js")
 const ms = require('ms') 
 const db2 = require('croxydb');
 const { duration } = require("moment");
@@ -165,8 +165,8 @@ if (!Number(winners) || Number(winners) < 1) {
             embeds: [embed],
             components: [row],
         })
-        db2.set(`giveaway_desc_${message.id}`, `${desc || "Good luck."}`)
-        db2.set(`giveaway_${message.id}`, uuid) 
+        await client.giveaway.set(`giveaway_desc_${message.id}`, `${desc || "Good luck."}`)
+        await client.giveaway.set(`giveaway_${message.id}`, uuid) 
         giveaway.update({ messageId: message.id })
         await modalSubmitInteraction.reply({
             content: `🎉 Ok! Giveaway ${channel} started!`,
