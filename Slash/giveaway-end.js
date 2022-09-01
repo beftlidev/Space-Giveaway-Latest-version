@@ -25,18 +25,20 @@ if(!interaction.member.permissions.has('MANAGE_EVENTS') && !interaction.member.r
                 ephemeral: true
             });
         }
-const id = interaction.options.getString('id')
-const giveaway2 = db.fetch(`giveaway_${id}`)
+
+
+
+const id = await client.giveaway.fetch(`gw_settings_id_${interaction.message.id}`)
+const giveaway2 = await client.giveaway.fetch(`giveaway_${id}`)
 const giveaway = await db2.Giveaways.findOne({
 where: { uuid: giveaway2 },
 })
-
-if(db.fetch(`gw_ended_${id}`) === "ended") {
-interaction.reply({content: "<:sgs_cross:973476220585013318> This giveaway is already over!"}) 
+if(await client.giveaway.fetch(`gw_ended_${id}`) === "ended") {
+interaction.reply({content: `${await client.emoji.fetch(`no`)} This giveaway is already over!`}) 
 } else {
-    interaction.reply({content: `<:sgs_tick:973476146391945246> Giveaway Ended!`})
+    interaction.reply({content: `${await client.emoji.fetch(`yes`)} Giveaway Ended!`})
 
-        db.set(`gw_ended_${id}`,`ended`)
+        await client.giveaway.set(`gw_ended_${id}`,`ended`)
 const guildPrefs = await db2.GuildPrefs.findOne({
                 where: {
                     guildId: giveaway.guildId,
@@ -58,7 +60,7 @@ const guildPrefs = await db2.GuildPrefs.findOne({
                         const row = new MessageActionRow().addComponents(
             new MessageButton()
                 .setCustomId('cekilis')
-                .setLabel("")
+                .setLabel("") 
                 .setStyle("SECONDARY")
                 .setDisabled(true) 
                 .setEmoji("🎉")
@@ -86,7 +88,7 @@ const guildPrefs = await db2.GuildPrefs.findOne({
             const embed = new MessageEmbed()
 .setColor('#2F3136') 
                 .setTitle("Giveaway Ended!")
-                .addField('<:gift:973484715917054002> Prize', `${bold(giveaway.item)}`)
+                .addField(`${await client.emoji.fetch(`gift`)} Prize`, `${bold(giveaway.item)}`)
         const row2 = new MessageActionRow().addComponents(
             new MessageButton()
                 .setCustomId('reroll')
@@ -99,7 +101,6 @@ const guildPrefs = await db2.GuildPrefs.findOne({
                 embeds: [embed],
                 components: [row2],
             })
-
 const embed2 = new Discord.MessageEmbed() 
 .setTitle(`🎉 Giveaway Ended! | Prize: ${giveaway.item}`) 
 .setDescription(`🏆 Winner(s): ${winnerNames.join(", ")} \n${giveaway.winners > entrants.length? `The last ${giveaway.winners - entrants.length == 1? "winner slot was": `${giveaway.winners - entrants.length} winner slots were`} not chosen as there were not enough entrants.`: ""}`) 
